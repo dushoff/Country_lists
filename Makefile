@@ -2,14 +2,14 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: notarget
+target pngtarget pdftarget vtarget acrtarget: pop.csv 
 
 ##################################################################
 
 
 # make files
 
-Sources = Makefile .gitignore README.md stuff.mk LICENSE.md
+Sources = Makefile .gitignore README.md stuff.mk LICENSE.md todo.mkd
 include stuff.mk
 
 ##################################################################
@@ -41,13 +41,29 @@ short.csv: abb.csv short.pl
 %.short.csv: %.csv short.csv abb.pl
 	$(PUSH)
 
+pop.short.csv: abb.pl
+
 ######################################################################
+
+### Download and scrape populations from Wikipedia (ugly)
+
+Sources += pop.pl pop.supp.csv
+
+pop.html:
+	wget -O $@ "http://en.wikipedia.org/wiki/List_of_countries_by_population"
+
+pop.auto.csv: pop.html pop.pl
+	$(PUSH)
+
+pop.csv: pop.auto.csv pop.supp.csv
+	cat $^ > $@
 
 ### Makestuff
 
 ## Change this name to download a new version of the makestuff directory
 # Makefile: start.makestuff
 
+-include $(ms)/perl.def
 -include $(ms)/git.mk
 -include $(ms)/visual.mk
 
