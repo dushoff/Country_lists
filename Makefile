@@ -1,11 +1,15 @@
 # Country_lists
+
+# Still moving content from http://lalashan.mcmaster.ca/theobio/demography/index.php/Countries
+
+######################################################################
+
 ### Hooks for the editor to set the default target
 current: target
 
 target pngtarget pdftarget vtarget acrtarget: pop.csv 
 
 ##################################################################
-
 
 # make files
 
@@ -16,14 +20,11 @@ include stuff.mk
 
 ## Abbreviations
 
-# Download an abbreviations file from the ISO, and mosh it into a .csv
+# NOTE: The old iso.csv site is broken, and I have found a better source. But for now I'm sticking with abb.csv, which was made manually by editing the old iso.csv
 
-iso.html:
-	wget -O $@ "http://www.addressdoctor.com/en/countries-data/iso-country-codes.html"
-
-Sources += iso.pl
-iso.csv: iso.html iso.pl
-	$(PUSH)
+Archive += geocode_countries.scsv
+geocode_countries.scsv:
+	wget -O $@ "http://www.opengeocode.org/download/countrynames.txt"
 
 # Make a personal country file by editing iso.csv
 Sources += abb.csv
